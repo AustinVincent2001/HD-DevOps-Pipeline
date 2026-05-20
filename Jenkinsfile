@@ -16,5 +16,12 @@ pipeline {
                 bat 'pytest'
             }
         }
+
+        stage('Code Quality') {
+            steps {
+                echo 'Running pylint code analysis'
+                bat 'pylint app.py || exit /b 0'
+            }
+        }
     }
 }
