@@ -30,5 +30,12 @@ pipeline {
                 bat 'bandit -r . || exit /b 0'
             }
         }
+
+        stage('Deploy') {
+            steps {
+                echo 'Deploying Flask application'
+                bat 'start /B python app.py'
+            }
+        }
     }
 }
