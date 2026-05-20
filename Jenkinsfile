@@ -23,5 +23,12 @@ pipeline {
                 bat 'pylint app.py || exit /b 0'
             }
         }
+
+        stage('Security Scan') {
+            steps {
+                echo 'Running Bandit security scan'
+                bat 'bandit -r . || exit /b 0'
+            }
+        }
     }
 }
