@@ -33,9 +33,9 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                echo 'Deploying Flask application'
-                bat 'start /B python app.py'
-            }
+               echo 'Deploying Flask application'
+               bat 'start /B "" "C:\\Users\\Austin Vincent\\anaconda3\\envs\\devops-pipeline\\python.exe" app.py'
+         }
         }
     }
 }
