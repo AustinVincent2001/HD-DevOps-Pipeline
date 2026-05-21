@@ -16,7 +16,6 @@ def home():
     """
     Home route.
     """
-    return "DevOps Pipeline Working Successfully"
-
+    return "Real Docker CI/CD Pipeline Running"
 if __name__ == "__main__":
-    app.run(debug=True)
+ app.run(host="0.0.0.0", port=5000, debug=True)

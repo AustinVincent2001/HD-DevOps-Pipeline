@@ -5,6 +5,7 @@ pipeline {
 
         stage('Build') {
             steps {
+
                 echo 'Installing project dependencies'
 
                 bat '"C:\\Users\\Austin Vincent\\anaconda3\\envs\\devops-pipeline\\python.exe" -m pip install -r requirements.txt'
@@ -13,6 +14,7 @@ pipeline {
 
         stage('Test') {
             steps {
+
                 echo 'Running automated tests'
 
                 bat '"C:\\Users\\Austin Vincent\\anaconda3\\envs\\devops-pipeline\\python.exe" -m pytest'
@@ -21,6 +23,7 @@ pipeline {
 
         stage('Code Quality') {
             steps {
+
                 echo 'Running pylint code analysis'
 
                 bat '"C:\\Users\\Austin Vincent\\anaconda3\\envs\\devops-pipeline\\python.exe" -m pylint app.py || exit /b 0'
@@ -29,17 +32,34 @@ pipeline {
 
         stage('Security Scan') {
             steps {
+
                 echo 'Running Bandit security scan'
 
                 bat '"C:\\Users\\Austin Vincent\\anaconda3\\envs\\devops-pipeline\\python.exe" -m bandit -r . || exit /b 0'
             }
         }
 
-        stage('Deploy') {
+        stage('Docker Build') {
             steps {
-                echo 'Deploying Flask application'
 
-                bat 'start /B "" "C:\\Users\\Austin Vincent\\anaconda3\\envs\\devops-pipeline\\python.exe" app.py'
+                echo 'Building Docker image'
+
+                bat 'docker build -t flask-devops-app .'
+            }
+        }
+
+        stage('Docker Deploy') {
+            steps {
+
+                echo 'Stopping old container if exists'
+
+                bat 'docker stop flask-container || exit /b 0'
+
+                bat 'docker rm flask-container || exit /b 0'
+
+                echo 'Running new Docker container'
+
+                bat 'docker run -d --name flask-container -p 5000:5000 flask-devops-app'
             }
         }
     }
@@ -51,18 +71,19 @@ pipeline {
             emailext(
                 subject: "Jenkins Pipeline Status: ${currentBuild.currentResult}",
                 body: """
-Pipeline completed successfully.
+Pipeline execution completed.
 
 Project: HD-DevOps-Pipeline
 Build Number: ${BUILD_NUMBER}
 Status: ${currentBuild.currentResult}
 
-Stages Completed:
+Stages:
 - Build
 - Test
 - Code Quality
 - Security Scan
-- Deploy
+- Docker Build
+- Docker Deploy
 """,
                 to: "ausbisacc@gmail.com"
             )
