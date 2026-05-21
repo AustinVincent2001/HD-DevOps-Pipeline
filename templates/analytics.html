@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Analytics</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>📊 Restaurant Analytics</h1>
+
+    <div class="nav">
+        <a href="/">Home</a>
+        <a href="/menu">Menu</a>
+        <a href="/orders">Orders</a>
+        <a href="/analytics">Analytics</a>
+    </div>
+
+    <div class="card">
+        <h2>Total Orders</h2>
+        <p>{{ total_orders }}</p>
+    </div>
+
+</div>
+
+</body>
+</html>

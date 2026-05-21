@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Orders</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>🛒 Customer Orders</h1>
+
+    <div class="nav">
+        <a href="/">Home</a>
+        <a href="/menu">Menu</a>
+        <a href="/orders">Orders</a>
+        <a href="/analytics">Analytics</a>
+    </div>
+
+    <div class="card">
+
+        <form method="POST">
+
+            <input type="text" name="customer" placeholder="Customer Name" required>
+
+            <input type="text" name="item" placeholder="Food Item" required>
+
+            <button type="submit">Add Order</button>
+
+        </form>
+
+    </div>
+
+    {% for order in orders %}
+
+    <div class="card">
+        <p><strong>{{ order.customer }}</strong> ordered {{ order.item }}</p>
+    </div>
+
+    {% endfor %}
+
+</div>
+
+</body>
+</html>
